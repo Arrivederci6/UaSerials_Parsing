@@ -15,21 +15,21 @@ const parse = async () =>
 
     // console.log($.html());
     //to get the number of existing pages
-     const pageNumber = $('.navigation  a')[0];
+     const pageNumber = +$('.navigation  :last-child').text();
      
-     console.log(pageNumber);
+    //  console.log(pageNumber);
 
     //loop to get necessary elements
     for(let i = 1; i <= pageNumber; i++)
     {
         const selector = await getHTML(`https://uaserials.pro/cartoons/page/${i}/`);
-
-        selector('.short-item width-16').each((i, element) =>
+        
+        selector('.short-item').each((i, element) => 
         {
-            const title = selector(element).find('div.th-title-oname truncate').text();
-            const link = `https://uaserials.pro${selector(element).find('a').attr("href")}`;
+            const serialTitle = selector(element).find('div.th-title-oname').text();
+            const serialLink = selector(element).find('a').attr('href');
 
-            fs.appendFileSync('./data.txt', `${title}; ${link}\n`);
+            fs.appendFileSync('./data.txt', `${serialTitle}; ${serialLink}\n`);
         });
     }
 
